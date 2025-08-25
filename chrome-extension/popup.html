@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TabSense</title>
+    <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>TabSense</h1>
+            <p class="subtitle">Smart Tab Predictor</p>
+        </div>
+
+        <div id="auth-container">
+            <div id="login-form" class="auth-form">
+                <h2>Login</h2>
+                <input type="email" id="login-email" placeholder="Email" required>
+                <input type="password" id="login-password" placeholder="Password" required>
+                <button id="login-btn" class="primary-btn">Login</button>
+                <p class="auth-switch">Don't have an account? <a href="#" id="show-signup">Sign up</a></p>
+            </div>
+
+            <div id="signup-form" class="auth-form" style="display: none;">
+                <h2>Sign Up</h2>
+                <input type="email" id="signup-email" placeholder="Email" required>
+                <input type="password" id="signup-password" placeholder="Password" required>
+                <input type="password" id="signup-confirm-password" placeholder="Confirm Password" required>
+                <button id="signup-btn" class="primary-btn">Sign Up</button>
+                <p class="auth-switch">Already have an account? <a href="#" id="show-login">Login</a></p>
+            </div>
+        </div>
+
+        <div id="main-container" style="display: none;">
+            <div class="user-info">
+                <p>Logged in as: <span id="user-email"></span></p>
+                <button id="logout-btn" class="secondary-btn">Logout</button>
+            </div>
+
+            <div class="prediction-section">
+                <h3>Next Suggested URL</h3>
+                <div id="prediction-container">
+                    <div id="loading-prediction" class="loading" style="display: none;">
+                        <div class="spinner"></div>
+                        <p>Analyzing your browsing patterns...</p>
+                    </div>
+                    <div id="prediction-result" style="display: none;">
+                        <p class="prediction-label">Recommended Site:</p>
+                        <a href="#" id="predicted-url" class="predicted-link" target="_blank">
+                            <span id="predicted-url-text"></span>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                                <polyline points="15 3 21 3 21 9"></polyline>
+                                <line x1="10" y1="14" x2="21" y2="3"></line>
+                            </svg>
+                        </a>
+                        <button id="refresh-prediction" class="secondary-btn">Refresh Prediction</button>
+                    </div>
+                    <div id="no-prediction" style="display: none;">
+                        <p class="no-data-message">Not enough data to make predictions yet. Keep browsing!</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="stats-section">
+                <h3>Stats</h3>
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <span class="stat-value" id="total-urls">0</span>
+                        <span class="stat-label">URLs Tracked</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-value" id="prediction-accuracy">--</span>
+                        <span class="stat-label">Accuracy</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="error-message" class="error-message" style="display: none;"></div>
+    </div>
+
+    <script src="firebase-config.js"></script>
+    <script src="popup.js"></script>
+</body>
+</html>
