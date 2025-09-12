@@ -617,7 +617,7 @@ input:focus {
     display: block;
     font-size: 24px;
     font-weight: bold;
-    color: #667eea;
+    color: #2c3e50;
 }
 
 .stat-label {
@@ -659,7 +659,7 @@ input:focus {
 }
 
 .action-btn.primary {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
     color: white;
 }
 
@@ -857,7 +857,7 @@ input:focus {
 .primary-btn {
     width: 100%;
     padding: 12px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
     color: white;
     border: none;
     border-radius: 8px;
