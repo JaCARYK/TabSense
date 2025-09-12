@@ -1,30 +1,75 @@
-# TabSense - Smart Tab Predictor
+# TabSense Declutter - Smart Tab Manager 🐕
 
-Chrome browser extension that uses Machine Learning to predict the next URL to open based on user browsing patterns and time.
+Chrome browser extension with an adorable animated dog mascot that helps you declutter and organize your browser tabs using AI-powered analysis.
 
-## Features
+## 🎯 Download & Install
 
-- **Smart URL Prediction**: Uses Random Forest classifier to predict your next tab based on browsing history
-- **User Authentication**: Secure login/signup system with Firebase
-- **Real-time Tracking**: Automatically tracks browsing patterns
-- **SMOTE Balancing**: Handles imbalanced datasets for better predictions
-- **Feature Importance Analysis**: Understands which factors matter most for predictions
-- **Privacy-Focused**: Data segregated per user with secure authentication
+**📦 [Install from Chrome Web Store](#)** *(Coming Soon!)*
 
-## Architecture
+*Or install manually following the setup instructions below*
+
+## ✨ Features
+
+**🤖 Smart Tab Analysis**
+- AI-powered classification of unused, forgotten, and duplicate tabs
+- Real-time tab health scoring with beautiful visual feedback
+- Intelligent suggestions for tab cleanup and organization
+
+**🐕 Animated Dog Companion**
+- Cute pixel-art dog mascot with personality
+- 3 emotional states based on your tab organization (happy/neutral/sad)  
+- Contextual speech bubbles with helpful messages
+- Wagging tail, blinking eyes, and bouncing beach ball animations
+
+**🎯 One-Click Actions**
+- Quick Clean: Instantly close rarely-used tabs
+- Auto Group: Organize tabs by domain (Google, GitHub, etc.)
+- Close Duplicates: Remove duplicate tabs intelligently
+- Bulk Selection: Choose exactly which tabs to close
+
+**📊 Health Dashboard**
+- Beautiful animated circular progress indicator
+- Real-time statistics (total tabs, duplicates, forgotten tabs)
+- Scenic background with sky, clouds, sun, and grass
+- Responsive design optimized for productivity
+
+**🔒 Privacy First**
+- All analysis happens locally in your browser
+- Optional Firebase sync for cross-device preferences
+- No tracking, no ads, no data selling
+- Open source on GitHub
+
+## 🚀 Perfect For
+
+- Students managing research tabs
+- Developers with multiple project tabs  
+- Professionals juggling multiple tasks
+- Anyone who loves cute dog animations!
+- Users who want to boost browser performance
+
+## 🏗️ Architecture
 
 ```
-Chrome Extension (JavaScript) → Firebase Firestore → Flask API → ML Model (Python/scikit-learn)
+Chrome Extension (Manifest V3) → Firebase (Optional) → Local AI Analysis
 ```
 
-## Setup Instructions
+## 📱 How to Use
+
+1. Install the extension from Chrome Web Store (link above)
+2. Click the TabSense icon in your toolbar
+3. Create an optional account for cross-device sync
+4. Let your new dog friend analyze your tabs
+5. Follow the smart suggestions to declutter
+6. Enjoy a faster, more organized browsing experience!
+
+## 🛠️ Development Setup
+
+Want to contribute or run locally? Follow these steps:
 
 ### Prerequisites
 
-- Python 3.8+
-- Node.js (for Firebase)
 - Chrome browser
-- Firebase account
+- Firebase account (optional, for sync features)
 
 ### 1. Firebase Setup
 
@@ -68,117 +113,54 @@ const firebaseConfig = {
 2. Enable "Developer mode" (top right)
 3. Click "Load unpacked"
 4. Select the `chrome-extension` folder
-5. The TabSense extension should now appear in your extensions list
+5. The TabSense Declutter extension should now appear in your extensions list
+6. Start decluttering your tabs with your new dog companion!
 
-### 4. Set up the Flask Server
+## 🔧 Technical Details
 
-1. Navigate to the flask-server directory:
-```bash
-cd flask-server
-```
+- **Manifest V3** compliant for latest Chrome standards
+- **Local Processing** - all tab analysis happens in your browser
+- **Firebase Integration** - optional cloud sync for preferences
+- **Performance Optimized** - lightweight and fast
+- **Cross-Platform** - works on all operating systems with Chrome
 
-2. Create a virtual environment:
-```bash
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-```
+## 🐛 Troubleshooting
 
-3. Install dependencies:
-```bash
-pip install -r requirements.txt
-```
-
-4. Ensure your `serviceAccountKey.json` is in place with correct Firebase credentials
-
-5. Run the server:
-```bash
-python app.py
-```
-
-The server will start on `http://localhost:5000`
-
-### 5. Using TabSense
-
-1. Click on the TabSense extension icon in Chrome
-2. Sign up for a new account or login
-3. Browse normally - the extension will track your tab patterns
-4. After collecting enough data (5+ URLs), you'll start seeing predictions
-5. Click on predicted URLs to open them in new tabs
-
-## ML Models Comparison
-
-The system compares three classifiers:
-- **Random Forest** (default): Best overall performance
-- **SVM**: Good for linear patterns
-- **Passive Aggressive**: Fast online learning
-
-## Time Intervals
-
-The system analyzes different time windows:
-- 30 seconds
-- 1 minute
-- 2 minutes (default)
-- 5 minutes
-- 10 minutes
-
-## Feature Importance
-
-The model considers:
-1. **Second**: Most important (immediate context)
-2. **Minute**: High importance
-3. **Hour**: Medium importance
-4. **Day**: Low importance
-5. **Month**: Minimal importance
-6. **Current URL**: Context-dependent
-
-## API Endpoints
-
-- `GET /predict/<month>/<day>/<hour>/<minute>/<url>/<email>/` - Get URL prediction
-- `GET /stats/<email>/` - Get user statistics
-- `GET /health` - Health check
-
-## Testing the ML Model
-
-Run feature analysis:
-```python
-from feature_analysis import generate_feature_report
-# Load user data from Firebase
-generate_feature_report(user_data)
-```
-
-## Troubleshooting
-
-### Extension not tracking tabs
-- Check that you're logged in
-- Verify Firebase configuration is correct
+### Extension not loading properly
+- Try reloading the extension in `chrome://extensions/`
 - Check browser console for errors (F12)
+- Ensure you're using a recent version of Chrome
 
-### No predictions showing
-- Ensure you have at least 5 URLs in history
-- Check that Flask server is running
-- Verify CORS is enabled
+### Dog mascot not appearing
+- The extension may still be initializing - wait a moment
+- Check that the extension has proper permissions
+- Try refreshing the popup
 
-### Firebase connection issues
-- Double-check Firebase configuration
-- Ensure Firestore is initialized
-- Verify service account key is valid
+### Sync not working
+- Verify you're logged into your account
+- Check your internet connection
+- Firebase sync is optional - local features work without it
 
-## Privacy & Security
+## 🔒 Privacy & Security
 
-- User passwords are handled by Firebase Auth
-- Each user's data is segregated
-- No cross-user data access
-- URLs are stored as hostnames only
-- Consider adding encryption for sensitive deployments
+- **Local First** - All tab analysis happens in your browser
+- **Optional Sync** - Cloud features are completely optional
+- **Secure Auth** - Firebase handles password security
+- **No Tracking** - We don't track your browsing or sell data
+- **Open Source** - Full transparency in how your data is handled
 
-## Future Improvements
+## 🎨 Why You'll Love It
 
-- Add more ML models (LSTM for sequences)
-- Implement user feedback loop
-- Add time-series analysis
-- Create visualization dashboard
-- Implement caching for faster predictions
-- Add group/workspace features
+TabSense Declutter isn't just another tab manager - it's a delightful companion that makes tab organization fun! Watch your dog jump for joy when you maintain good tab hygiene, or see it get sad when tabs pile up. The beautiful animations and personality-filled interactions make mundane tab management an enjoyable experience.
+
+## 🔮 Future Improvements
+
+- More dog expressions and animations
+- Additional mascot options (cats, other pets)
+- Advanced tab categorization
+- Team/workspace sharing features
+- Browser performance insights
+- Custom themes and backgrounds
 
 ## Contributing
 
@@ -191,12 +173,14 @@ generate_feature_report(user_data)
 
 MIT License - See LICENSE file for details
 
-## Authors
+## 🏷️ About
 
-TabSense - Smart Tab Prediction System
+**TabSense Declutter** - Smart Tab Manager with Adorable Dog Mascot
 
-## Acknowledgments
+Built by Jacob
 
-- scikit-learn for ML algorithms
-- Firebase for backend infrastructure
-- SMOTE for handling imbalanced datasets
+---
+
+**Need help?** Check the troubleshooting section above.
+
+**Love the extension?** Give it a ⭐ on GitHub and share it with your friends!
