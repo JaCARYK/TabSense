@@ -2,44 +2,44 @@
 
 Chrome browser extension with an adorable animated dog mascot that helps you declutter and organize your browser tabs using AI-powered analysis.
 
-## 🎯 Download & Install
+## Download & Install
 
-**📦 [Install from Chrome Web Store](#)** *(Coming Soon!)*
+** [Install from Chrome Web Store](#)** *(Coming Soon!)*
 
 *Or install manually following the setup instructions below*
 
-## ✨ Features
+##  Features
 
 **🤖 Smart Tab Analysis**
 - AI-powered classification of unused, forgotten, and duplicate tabs
 - Real-time tab health scoring with beautiful visual feedback
 - Intelligent suggestions for tab cleanup and organization
 
-**🐕 Animated Dog Companion**
+** Animated Dog Companion**
 - Cute pixel-art dog mascot with personality
 - 3 emotional states based on your tab organization (happy/neutral/sad)  
 - Contextual speech bubbles with helpful messages
 - Wagging tail, blinking eyes, and bouncing beach ball animations
 
-**🎯 One-Click Actions**
+** One-Click Actions**
 - Quick Clean: Instantly close rarely-used tabs
 - Auto Group: Organize tabs by domain (Google, GitHub, etc.)
 - Close Duplicates: Remove duplicate tabs intelligently
 - Bulk Selection: Choose exactly which tabs to close
 
-**📊 Health Dashboard**
+** Health Dashboard**
 - Beautiful animated circular progress indicator
 - Real-time statistics (total tabs, duplicates, forgotten tabs)
 - Scenic background with sky, clouds, sun, and grass
 - Responsive design optimized for productivity
 
-**🔒 Privacy First**
+** Privacy First**
 - All analysis happens locally in your browser
 - Optional Firebase sync for cross-device preferences
 - No tracking, no ads, no data selling
 - Open source on GitHub
 
-## 🚀 Perfect For
+##  Perfect For
 
 - Students managing research tabs
 - Developers with multiple project tabs  
@@ -53,7 +53,7 @@ Chrome browser extension with an adorable animated dog mascot that helps you dec
 Chrome Extension (Manifest V3) → Firebase (Optional) → Local AI Analysis
 ```
 
-## 📱 How to Use
+##  How to Use
 
 1. Install the extension from Chrome Web Store (link above)
 2. Click the TabSense icon in your toolbar
@@ -62,7 +62,7 @@ Chrome Extension (Manifest V3) → Firebase (Optional) → Local AI Analysis
 5. Follow the smart suggestions to declutter
 6. Enjoy a faster, more organized browsing experience!
 
-## 🛠️ Development Setup
+##  Development Setup
 
 Want to contribute or run locally? Follow these steps:
 
@@ -116,7 +116,7 @@ const firebaseConfig = {
 5. The TabSense Declutter extension should now appear in your extensions list
 6. Start decluttering your tabs with your new dog companion!
 
-## 🔧 Technical Details
+## Technical Details
 
 - **Manifest V3** compliant for latest Chrome standards
 - **Local Processing** - all tab analysis happens in your browser
@@ -124,7 +124,7 @@ const firebaseConfig = {
 - **Performance Optimized** - lightweight and fast
 - **Cross-Platform** - works on all operating systems with Chrome
 
-## 🐛 Troubleshooting
+## Troubleshooting
 
 ### Extension not loading properly
 - Try reloading the extension in `chrome://extensions/`
@@ -141,7 +141,7 @@ const firebaseConfig = {
 - Check your internet connection
 - Firebase sync is optional - local features work without it
 
-## 🔒 Privacy & Security
+## Privacy & Security
 
 - **Local First** - All tab analysis happens in your browser
 - **Optional Sync** - Cloud features are completely optional
@@ -149,11 +149,11 @@ const firebaseConfig = {
 - **No Tracking** - We don't track your browsing or sell data
 - **Open Source** - Full transparency in how your data is handled
 
-## 🎨 Why You'll Love It
+## Why You'll Love It
 
-TabSense Declutter isn't just another tab manager - it's a delightful companion that makes tab organization fun! Watch your dog jump for joy when you maintain good tab hygiene, or see it get sad when tabs pile up. The beautiful animations and personality-filled interactions make mundane tab management an enjoyable experience.
+TabSense Declutter isn't just another tab manager, it's a delightful companion that makes tab organization fun! Watch your dog jump for joy when you maintain good tab hygiene, or see it get sad when tabs pile up. The beautiful animations and personality-filled interactions make mundane tab management an enjoyable experience.
 
-## 🔮 Future Improvements
+## Future Improvements
 
 - More dog expressions and animations
 - Additional mascot options (cats, other pets)
@@ -173,7 +173,7 @@ TabSense Declutter isn't just another tab manager - it's a delightful companion 
 
 MIT License - See LICENSE file for details
 
-## 🏷️ About
+## About
 
 **TabSense Declutter** - Smart Tab Manager with Adorable Dog Mascot
 
