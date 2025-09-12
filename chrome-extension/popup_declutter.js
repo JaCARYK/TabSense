@@ -2,7 +2,10 @@ let currentUser = null;
 let currentSuggestions = null;
 let selectedTabs = new Set();
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', async function() {
+    // Small delay to ensure background script is ready
+    await new Promise(resolve => setTimeout(resolve, 200));
+    
     checkAuthState();
     setupEventListeners();
     
@@ -186,21 +189,37 @@ async function loadTabSuggestions() {
     
     const loadWithRetry = () => {
         return new Promise((resolve) => {
-            // Get suggestions from background script
-            chrome.runtime.sendMessage({ action: 'getSuggestions' }, function(response) {
-                if (chrome.runtime.lastError || !response || !response.success) {
+            // First ensure background is ready
+            chrome.runtime.sendMessage({ action: 'ping' }, function(pingResponse) {
+                if (chrome.runtime.lastError || !pingResponse || !pingResponse.ready) {
                     if (retryCount < maxRetries) {
                         retryCount++;
-                        console.log(`Retrying... attempt ${retryCount}`);
+                        console.log(`Background not ready, retrying... attempt ${retryCount}`);
                         setTimeout(() => {
                             loadWithRetry().then(resolve);
-                        }, 1000 * retryCount); // Exponential backoff
+                        }, 500 + (500 * retryCount)); // Progressive backoff
                     } else {
                         resolve(null);
                     }
-                } else {
-                    resolve(response);
+                    return;
                 }
+                
+                // Background is ready, now get suggestions
+                chrome.runtime.sendMessage({ action: 'getSuggestions' }, function(response) {
+                    if (chrome.runtime.lastError || !response || !response.success) {
+                        if (retryCount < maxRetries) {
+                            retryCount++;
+                            console.log(`Retrying suggestions... attempt ${retryCount}`);
+                            setTimeout(() => {
+                                loadWithRetry().then(resolve);
+                            }, 1000 * retryCount); // Exponential backoff
+                        } else {
+                            resolve(null);
+                        }
+                    } else {
+                        resolve(response);
+                    }
+                });
             });
         });
     };

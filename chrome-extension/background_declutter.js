@@ -14,6 +14,10 @@ const TAB_CLEANUP_THRESHOLD = 7 * 24 * 60 * 60 * 1000; // 7 days in milliseconds
 const FORGOTTEN_TAB_THRESHOLD = 3 * 24 * 60 * 60 * 1000; // 3 days
 const INACTIVE_TAB_THRESHOLD = 60 * 60 * 1000; // 1 hour
 
+// Track initialization state
+let isInitialized = false;
+let initializationPromise = null;
+
 // Initialize when extension is installed
 chrome.runtime.onInstalled.addListener(async () => {
     console.log('TabSense Declutter installed');
@@ -31,24 +35,69 @@ chrome.runtime.onSuspend.addListener(() => {
     console.log('Service worker suspending');
 });
 
+// Initialize immediately when service worker loads
+initializeExtension().catch(error => {
+    console.error('Failed to initialize on startup:', error);
+});
+
 async function initializeExtension() {
-    try {
-        // Wait for Firebase to initialize
-        await new Promise((resolve) => {
-            initializeFirebase();
-            setTimeout(resolve, 1000); // Give Firebase time to initialize
-        });
-        
-        // Then initialize tab tracking
-        await initializeTabTracking();
-        
-        // Finally start periodic classification
-        startPeriodicClassification();
-        
-        console.log('Extension fully initialized');
-    } catch (error) {
-        console.error('Extension initialization error:', error);
+    // If already initialized or in progress, return the existing promise
+    if (isInitialized) {
+        return Promise.resolve();
     }
+    
+    if (initializationPromise) {
+        return initializationPromise;
+    }
+    
+    initializationPromise = (async () => {
+        try {
+            console.log('Starting extension initialization...');
+            
+            // Ensure Chrome APIs are ready
+            await new Promise((resolve) => {
+                if (chrome.runtime && chrome.tabs) {
+                    resolve();
+                } else {
+                    setTimeout(resolve, 100);
+                }
+            });
+            
+            // Wait for Firebase to initialize
+            await new Promise((resolve) => {
+                initializeFirebase();
+                setTimeout(resolve, 2000); // Increased timeout for Firebase
+            });
+            
+            // Then initialize tab tracking with retry
+            let retries = 3;
+            while (retries > 0) {
+                try {
+                    await initializeTabTracking();
+                    break;
+                } catch (error) {
+                    retries--;
+                    if (retries === 0) throw error;
+                    console.log(`Retrying tab initialization... ${retries} attempts left`);
+                    await new Promise(resolve => setTimeout(resolve, 500));
+                }
+            }
+            
+            // Finally start periodic classification
+            startPeriodicClassification();
+            
+            isInitialized = true;
+            console.log('Extension fully initialized');
+        } catch (error) {
+            console.error('Extension initialization error:', error);
+            // Reset so we can retry
+            initializationPromise = null;
+            isInitialized = false;
+            throw error;
+        }
+    })();
+    
+    return initializationPromise;
 }
 
 function initializeFirebase() {
@@ -417,7 +466,10 @@ async function getTabSuggestions() {
 // Message handlers
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     if (request.action === 'ping') {
-        sendResponse({ ready: true });
+        // Ensure we're initialized before saying we're ready
+        initializeExtension()
+            .then(() => sendResponse({ ready: true }))
+            .catch(() => sendResponse({ ready: false }));
         return true;
     }
 
@@ -443,7 +495,9 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     }
 
     if (request.action === 'getSuggestions') {
-        getTabSuggestions()
+        // Ensure initialization before getting suggestions
+        initializeExtension()
+            .then(() => getTabSuggestions())
             .then(suggestions => {
                 // Convert Map to object for serialization
                 const serializedSuggestions = {
@@ -479,39 +533,52 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     }
 
     if (request.action === 'getTabStats') {
-        const tabValues = Array.from(tabData.values());
-        const stats = {
-            totalTabs: tabData.size,
-            activeTabs: tabValues.filter(t => t.isActive).length,
-            pinnedTabs: tabValues.filter(t => t.isPinned).length,
-            forgottenTabs: tabValues.filter(t => t.status === 'forgotten').length,
-            unusedTabs: tabValues.filter(t => t.status === 'unused' || t.status === 'candidate_close').length,
-            frequentlyUsed: tabValues.filter(t => t.status === 'frequently_used').length
-        };
-        
-        // Calculate health score
-        let healthScore = 100;
-        
-        // Deduct for too many tabs
-        if (stats.totalTabs > 20) {
-            healthScore -= Math.min(30, (stats.totalTabs - 20) * 1.5);
-        }
-        
-        // Deduct for unused/forgotten tabs
-        const wastedTabs = stats.forgottenTabs + stats.unusedTabs;
-        if (wastedTabs > 0) {
-            healthScore -= Math.min(40, wastedTabs * 5);
-        }
-        
-        // Bonus for organization (pinned tabs, groups)
-        const groupedTabs = tabValues.filter(t => t.groupId && t.groupId !== -1).length;
-        if (stats.pinnedTabs > 0 || groupedTabs > 0) {
-            healthScore += Math.min(10, (stats.pinnedTabs + groupedTabs) * 2);
-        }
-        
-        stats.healthScore = Math.max(0, Math.min(100, Math.round(healthScore)));
-        
-        sendResponse({ success: true, stats });
+        // Ensure initialization before getting stats
+        initializeExtension()
+            .then(async () => {
+                // Get current tabs if tabData is empty
+                if (tabData.size === 0) {
+                    await initializeTabTracking();
+                }
+                
+                const tabValues = Array.from(tabData.values());
+                const stats = {
+                    totalTabs: tabData.size,
+                    activeTabs: tabValues.filter(t => t.isActive).length,
+                    pinnedTabs: tabValues.filter(t => t.isPinned).length,
+                    forgottenTabs: tabValues.filter(t => t.status === 'forgotten').length,
+                    unusedTabs: tabValues.filter(t => t.status === 'unused' || t.status === 'candidate_close').length,
+                    frequentlyUsed: tabValues.filter(t => t.status === 'frequently_used').length
+                };
+                
+                // Calculate health score
+                let healthScore = 100;
+                
+                // Deduct for too many tabs
+                if (stats.totalTabs > 20) {
+                    healthScore -= Math.min(30, (stats.totalTabs - 20) * 1.5);
+                }
+                
+                // Deduct for unused/forgotten tabs
+                const wastedTabs = stats.forgottenTabs + stats.unusedTabs;
+                if (wastedTabs > 0) {
+                    healthScore -= Math.min(40, wastedTabs * 5);
+                }
+                
+                // Bonus for organization (pinned tabs, groups)
+                const groupedTabs = tabValues.filter(t => t.groupId && t.groupId !== -1).length;
+                if (stats.pinnedTabs > 0 || groupedTabs > 0) {
+                    healthScore += Math.min(10, (stats.pinnedTabs + groupedTabs) * 2);
+                }
+                
+                stats.healthScore = Math.max(0, Math.min(100, Math.round(healthScore)));
+                
+                sendResponse({ success: true, stats });
+            })
+            .catch(error => {
+                console.error('Error getting tab stats:', error);
+                sendResponse({ success: false, error: error.message });
+            });
         return true;
     }
 });
