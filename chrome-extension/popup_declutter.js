@@ -69,6 +69,22 @@ function checkAuthState() {
     });
 }
 
+// Add a ready check for the background script
+function waitForBackgroundReady() {
+    return new Promise((resolve) => {
+        const checkReady = () => {
+            chrome.runtime.sendMessage({ action: 'ping' }, function(response) {
+                if (chrome.runtime.lastError || !response) {
+                    setTimeout(checkReady, 500);
+                } else {
+                    resolve();
+                }
+            });
+        };
+        checkReady();
+    });
+}
+
 async function handleLogin() {
     const email = document.getElementById('login-email').value.trim();
     const password = document.getElementById('login-password').value;
@@ -164,27 +180,66 @@ function hideLoading() {
 async function loadTabSuggestions() {
     showLoading();
     
-    // Get current tabs
-    const tabs = await chrome.tabs.query({});
+    // Wait for background script to be ready
+    let retryCount = 0;
+    const maxRetries = 5;
     
-    // Get suggestions from background script
-    chrome.runtime.sendMessage({ action: 'getSuggestions' }, function(response) {
-        hideLoading();
+    const loadWithRetry = () => {
+        return new Promise((resolve) => {
+            // Get suggestions from background script
+            chrome.runtime.sendMessage({ action: 'getSuggestions' }, function(response) {
+                if (chrome.runtime.lastError || !response || !response.success) {
+                    if (retryCount < maxRetries) {
+                        retryCount++;
+                        console.log(`Retrying... attempt ${retryCount}`);
+                        setTimeout(() => {
+                            loadWithRetry().then(resolve);
+                        }, 1000 * retryCount); // Exponential backoff
+                    } else {
+                        resolve(null);
+                    }
+                } else {
+                    resolve(response);
+                }
+            });
+        });
+    };
+    
+    const response = await loadWithRetry();
+    
+    if (response && response.success) {
+        currentSuggestions = response.suggestions;
+        const tabs = await chrome.tabs.query({});
+        updateUI(tabs, response.suggestions);
         
-        if (response.success) {
-            currentSuggestions = response.suggestions;
-            updateUI(tabs, response.suggestions);
-        } else {
-            showError('Failed to analyze tabs');
-        }
-    });
+        // Get tab stats
+        chrome.runtime.sendMessage({ action: 'getTabStats' }, function(statsResponse) {
+            if (statsResponse && statsResponse.success) {
+                updateStats(statsResponse.stats);
+            } else {
+                // Fallback stats
+                updateStats({
+                    totalTabs: tabs.length,
+                    unusedTabs: 0,
+                    forgottenTabs: 0,
+                    healthScore: 100
+                });
+            }
+        });
+    } else {
+        showError('Extension is still initializing. Please try again in a moment.');
+        
+        // Show minimal fallback UI
+        const tabs = await chrome.tabs.query({});
+        updateStats({
+            totalTabs: tabs.length,
+            unusedTabs: 0,
+            forgottenTabs: 0,
+            healthScore: 100
+        });
+    }
     
-    // Get tab stats
-    chrome.runtime.sendMessage({ action: 'getTabStats' }, function(response) {
-        if (response.success) {
-            updateStats(response.stats);
-        }
-    });
+    hideLoading();
 }
 
 function updateStats(stats) {

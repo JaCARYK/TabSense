@@ -455,8 +455,6 @@ body {
     background: linear-gradient(to bottom, #000 0%, transparent 100%);
 }
 
-/* Happy dog keeps simple black eyes - no changes needed */
-
 .dog-sprite.sad .dog-tail {
     animation: tail-droop 4s ease-in-out infinite;
 }

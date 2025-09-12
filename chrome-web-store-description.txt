@@ -1,0 +1,69 @@
+🐕 **TabSense Declutter - Smart Tab Manager with Adorable Dog Mascot!**
+
+Transform your chaotic browser tabs into an organized, delightful experience with TabSense Declutter! Our AI-powered extension features an adorable animated dog that reacts to your tab health and helps you maintain a clutter-free browsing experience.
+
+## ✨ Key Features
+
+**🤖 Smart Tab Analysis**
+- AI-powered classification of unused, forgotten, and duplicate tabs
+- Real-time tab health scoring with beautiful visual feedback
+- Intelligent suggestions for tab cleanup and organization
+
+**🐕 Animated Dog Companion**
+- Cute pixel-art dog mascot with personality
+- 3 emotional states based on your tab organization (happy/neutral/sad)  
+- Contextual speech bubbles with helpful messages
+- Wagging tail, blinking eyes, and bouncing beach ball animations
+
+**🎯 One-Click Actions**
+- Quick Clean: Instantly close rarely-used tabs
+- Auto Group: Organize tabs by domain (Google, GitHub, etc.)
+- Close Duplicates: Remove duplicate tabs intelligently
+- Bulk Selection: Choose exactly which tabs to close
+
+**📊 Health Dashboard**
+- Beautiful animated circular progress indicator
+- Real-time statistics (total tabs, duplicates, forgotten tabs)
+- Scenic background with sky, clouds, sun, and grass
+- Responsive design optimized for productivity
+
+**🔒 Privacy First**
+- All analysis happens locally in your browser
+- Optional Firebase sync for cross-device preferences
+- No tracking, no ads, no data selling
+- Open source on GitHub
+
+## 🚀 Perfect For
+
+- Students managing research tabs
+- Developers with multiple project tabs  
+- Professionals juggling multiple tasks
+- Anyone who loves cute dog animations!
+- Users who want to boost browser performance
+
+## 🎨 Why You'll Love It
+
+TabSense Declutter isn't just another tab manager - it's a delightful companion that makes tab organization fun! Watch your dog jump for joy when you maintain good tab hygiene, or see it get sad when tabs pile up. The beautiful animations and personality-filled interactions make mundane tab management an enjoyable experience.
+
+## 📱 How to Use
+
+1. Install the extension
+2. Click the TabSense icon in your toolbar
+3. Create an optional account for cross-device sync
+4. Let your new dog friend analyze your tabs
+5. Follow the smart suggestions to declutter
+6. Enjoy a faster, more organized browsing experience!
+
+## 🔧 Technical Details
+
+- Manifest V3 compliant
+- Works with Chrome tab groups and bookmarks
+- Analyzes browsing history for better suggestions
+- Lightweight and fast performance
+- Regular updates with new features
+
+Ready to turn tab chaos into organized bliss? Install TabSense Declutter today and meet your new favorite browser companion! 🐕✨
+
+---
+**Need help?** Visit our GitHub: https://github.com/JaCARYK/TabSense
+**Privacy Policy**: Included with extension

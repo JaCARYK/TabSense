@@ -14,20 +14,42 @@ const TAB_CLEANUP_THRESHOLD = 7 * 24 * 60 * 60 * 1000; // 7 days in milliseconds
 const FORGOTTEN_TAB_THRESHOLD = 3 * 24 * 60 * 60 * 1000; // 3 days
 const INACTIVE_TAB_THRESHOLD = 60 * 60 * 1000; // 1 hour
 
-chrome.runtime.onInstalled.addListener(() => {
+// Initialize when extension is installed
+chrome.runtime.onInstalled.addListener(async () => {
     console.log('TabSense Declutter installed');
-    initializeFirebase();
-    initializeTabTracking();
-    startPeriodicClassification();
+    await initializeExtension();
 });
 
 // Also reinitialize when extension starts (e.g., browser restart)
-chrome.runtime.onStartup.addListener(() => {
+chrome.runtime.onStartup.addListener(async () => {
     console.log('TabSense Declutter starting up');
-    initializeFirebase();
-    initializeTabTracking();
-    startPeriodicClassification();
+    await initializeExtension();
 });
+
+// Initialize when service worker starts
+chrome.runtime.onSuspend.addListener(() => {
+    console.log('Service worker suspending');
+});
+
+async function initializeExtension() {
+    try {
+        // Wait for Firebase to initialize
+        await new Promise((resolve) => {
+            initializeFirebase();
+            setTimeout(resolve, 1000); // Give Firebase time to initialize
+        });
+        
+        // Then initialize tab tracking
+        await initializeTabTracking();
+        
+        // Finally start periodic classification
+        startPeriodicClassification();
+        
+        console.log('Extension fully initialized');
+    } catch (error) {
+        console.error('Extension initialization error:', error);
+    }
+}
 
 function initializeFirebase() {
     const firebaseConfig = {
@@ -394,6 +416,11 @@ async function getTabSuggestions() {
 
 // Message handlers
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+    if (request.action === 'ping') {
+        sendResponse({ ready: true });
+        return true;
+    }
+
     if (request.action === 'login') {
         handleLogin(request.email, request.password)
             .then(result => sendResponse(result))
