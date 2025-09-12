@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TabSense Declutter</title>
+    <link rel="stylesheet" href="popup_declutter.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="scene-background">
+                <div class="sun"></div>
+                <div class="clouds">
+                    <div class="cloud cloud-1"></div>
+                    <div class="cloud cloud-2"></div>
+                </div>
+            </div>
+            
+            <div class="header-content">
+                <h1>TabSense</h1>
+                
+                <div class="mascot-container">
+                    <div class="dog-sprite" id="dog-mascot">
+                        <!-- Dog will be drawn with CSS/SVG -->
+                        <div class="dog-body"></div>
+                        <div class="dog-head">
+                            <div class="dog-nose"></div>
+                            <div class="dog-mouth"></div>
+                        </div>
+                        <div class="dog-tail"></div>
+                        <div class="beach-ball"></div>
+                        <div class="dog-paw-left"></div>
+                        <div class="dog-paw-right"></div>
+                    </div>
+                    <div class="speech-bubble" id="speech-bubble">
+                        <span class="bubble-text"></span>
+                    </div>
+                </div>
+                
+                <div class="health-score" id="health-score">
+                    <svg class="score-circle-svg" width="80" height="80">
+                        <circle class="score-circle-bg" cx="40" cy="40" r="36" />
+                        <circle class="score-circle-progress" cx="40" cy="40" r="36" />
+                    </svg>
+                    <div class="score-display">
+                        <span class="score-value">--</span>
+                        <span class="score-label">Health</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="grass-floor"></div>
+        </div>
+
+        <!-- Auth Section (Initially shown) -->
+        <div id="auth-container">
+            <div id="login-form" class="auth-form">
+                <h2>Login</h2>
+                <input type="email" id="login-email" placeholder="Email" required>
+                <input type="password" id="login-password" placeholder="Password" required>
+                <button id="login-btn" class="primary-btn">Login</button>
+                <p class="auth-switch">Don't have an account? <a href="#" id="show-signup">Sign up</a></p>
+            </div>
+
+            <div id="signup-form" class="auth-form" style="display: none;">
+                <h2>Sign Up</h2>
+                <input type="email" id="signup-email" placeholder="Email" required>
+                <input type="password" id="signup-password" placeholder="Password" required>
+                <input type="password" id="signup-confirm-password" placeholder="Confirm Password" required>
+                <button id="signup-btn" class="primary-btn">Sign Up</button>
+                <p class="auth-switch">Already have an account? <a href="#" id="show-login">Login</a></p>
+            </div>
+        </div>
+
+        <!-- Main Dashboard (Hidden initially) -->
+        <div id="main-container" style="display: none;">
+            <!-- Quick Stats -->
+            <div class="stats-bar">
+                <div class="stat">
+                    <span class="stat-value" id="total-tabs">0</span>
+                    <span class="stat-label">Total Tabs</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-value" id="can-close">0</span>
+                    <span class="stat-label">Can Close</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-value" id="duplicates">0</span>
+                    <span class="stat-label">Duplicates</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-value" id="forgotten">0</span>
+                    <span class="stat-label">Forgotten</span>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="quick-actions">
+                <button id="quick-clean" class="action-btn primary">
+                    🧹 Quick Clean
+                    <span class="badge" id="quick-clean-count">0</span>
+                </button>
+                <button id="group-tabs" class="action-btn">
+                    📁 Auto Group
+                    <span class="badge" id="group-count">0</span>
+                </button>
+                <button id="close-duplicates" class="action-btn">
+                    🔄 Close Duplicates
+                    <span class="badge" id="duplicate-count">0</span>
+                </button>
+            </div>
+
+            <!-- Tabs to Close Section -->
+            <div class="section" id="close-section">
+                <h3>
+                    Suggested to Close
+                    <button class="select-all-btn" id="select-all-close">Select All</button>
+                </h3>
+                <div class="tab-list" id="close-list">
+                    <!-- Dynamic content -->
+                </div>
+                <button id="close-selected" class="action-btn danger" style="display: none;">
+                    Close Selected Tabs
+                </button>
+            </div>
+
+            <!-- Forgotten Tabs Section -->
+            <div class="section" id="forgotten-section">
+                <h3>Forgotten Tabs</h3>
+                <div class="tab-list" id="forgotten-list">
+                    <!-- Dynamic content -->
+                </div>
+            </div>
+
+            <!-- Group Suggestions Section -->
+            <div class="section" id="group-section">
+                <h3>Suggested Groups</h3>
+                <div class="group-list" id="group-list">
+                    <!-- Dynamic content -->
+                </div>
+            </div>
+
+            <!-- User Info -->
+            <div class="user-footer">
+                <span id="user-email"></span>
+                <button id="logout-btn" class="text-btn">Logout</button>
+            </div>
+        </div>
+
+        <!-- Loading State -->
+        <div id="loading" class="loading" style="display: none;">
+            <div class="spinner"></div>
+            <p>Analyzing your tabs...</p>
+        </div>
+
+        <!-- Error Message -->
+        <div id="error-message" class="error-message" style="display: none;"></div>
+    </div>
+
+    <script src="firebase-config.js"></script>
+    <script src="popup_declutter.js"></script>
+</body>
+</html>

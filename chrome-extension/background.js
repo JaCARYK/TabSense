@@ -6,7 +6,7 @@ let firebaseApp = null;
 let db = null;
 let auth = null;
 let currentUser = null;
-const FLASK_API_URL = 'http://localhost:5000';
+const FLASK_API_URL = 'http://localhost:5001';
 
 chrome.runtime.onInstalled.addListener(() => {
     console.log('TabSense extension installed');
@@ -15,12 +15,13 @@ chrome.runtime.onInstalled.addListener(() => {
 
 function initializeFirebase() {
     const firebaseConfig = {
-        apiKey: "YOUR_API_KEY",
-        authDomain: "YOUR_AUTH_DOMAIN",
-        projectId: "YOUR_PROJECT_ID",
-        storageBucket: "YOUR_STORAGE_BUCKET",
-        messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-        appId: "YOUR_APP_ID"
+        apiKey: "AIzaSyDkAxvui00Uo_L3-1nugF8to_TG6Qu4uPI",
+        authDomain: "tabsense-14916.firebaseapp.com",
+        projectId: "tabsense-14916",
+        storageBucket: "tabsense-14916.firebasestorage.app",
+        messagingSenderId: "853012985837",
+        appId: "1:853012985837:web:3400cff5c36788a843d9e4",
+        measurementId: "G-4NPLFJ1JVF"
     };
 
     try {

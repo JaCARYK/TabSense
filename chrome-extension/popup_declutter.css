@@ -1,0 +1,915 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    width: 420px;
+    min-height: 500px;
+    max-height: 600px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: #f8f9fa;
+    color: #2c3e50;
+    overflow-y: auto;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+/* Header */
+.header {
+    position: relative;
+    height: 200px;
+    overflow: visible; /* Changed from hidden to visible so dog shows */
+    color: white;
+}
+
+/* Scene Background */
+.scene-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(to bottom, #87CEEB 0%, #B0E0E6 60%, #E0F6FF 100%);
+    z-index: 1;
+}
+
+.sun {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    width: 40px;
+    height: 40px;
+    background: radial-gradient(circle, #FFD700, #FFA500);
+    border-radius: 50%;
+    box-shadow: 0 0 30px rgba(255, 215, 0, 0.6);
+    z-index: 2;
+    animation: sun-glow 3s ease-in-out infinite;
+}
+
+@keyframes sun-glow {
+    0%, 100% { box-shadow: 0 0 30px rgba(255, 215, 0, 0.6); }
+    50% { box-shadow: 0 0 40px rgba(255, 215, 0, 0.8); }
+}
+
+.clouds {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+
+.cloud {
+    position: absolute;
+    background: white;
+    border-radius: 100px;
+    opacity: 0.7;
+}
+
+.cloud::before,
+.cloud::after {
+    content: '';
+    position: absolute;
+    background: white;
+    border-radius: 100px;
+}
+
+.cloud-1 {
+    width: 40px;
+    height: 15px;
+    top: 30px;
+    left: 50px;
+    animation: cloud-drift 20s linear infinite;
+}
+
+.cloud-1::before {
+    width: 20px;
+    height: 20px;
+    top: -10px;
+    left: 10px;
+}
+
+.cloud-2 {
+    width: 30px;
+    height: 12px;
+    top: 50px;
+    right: 80px;
+    animation: cloud-drift 25s linear infinite reverse;
+}
+
+@keyframes cloud-drift {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(50px); }
+}
+
+/* Grass Floor */
+.grass-floor {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 50px;  /* Made taller for dog to sit on */
+    background: linear-gradient(to bottom, #7CFC00 0%, #32CD32 50%, #228B22 100%);
+    z-index: 2;
+}
+
+.grass-floor::before {
+    content: '';
+    position: absolute;
+    top: -5px;
+    left: 0;
+    right: 0;
+    height: 10px;
+    background: repeating-linear-gradient(
+        90deg,
+        #7CFC00,
+        #7CFC00 3px,
+        #32CD32 3px,
+        #32CD32 6px
+    );
+}
+
+/* Header Content */
+.header-content {
+    position: relative;
+    z-index: 10;
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.header h1 {
+    font-size: 22px;
+    font-weight: 700;
+    color: white;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+    margin: 0;
+}
+
+/* Mascot Container */
+.mascot-container {
+    position: absolute;
+    top: 100px;  /* Position from top instead - puts dog on grass */
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 5;
+}
+
+/* Dog Sprite - Pixel Art Style */
+.dog-sprite {
+    position: relative;
+    width: 80px;
+    height: 80px;
+    transition: all 0.3s ease;
+}
+
+/* Dog Body Parts */
+.dog-body {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 40px;
+    height: 35px;
+    background: linear-gradient(135deg, #D2691E 0%, #CD853F 100%);
+    border-radius: 20px 20px 15px 15px;
+    box-shadow: 
+        inset -3px -3px 0 rgba(0,0,0,0.1),
+        0 3px 6px rgba(0,0,0,0.2);
+}
+
+/* Add white chest patch */
+.dog-body::after {
+    content: '';
+    position: absolute;
+    bottom: 5px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 15px;
+    height: 20px;
+    background: #FFF8DC;
+    border-radius: 50%;
+    opacity: 0.8;
+}
+
+.dog-head {
+    position: absolute;
+    bottom: 35px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 35px;
+    height: 35px;
+    background: linear-gradient(135deg, #D2691E 0%, #CD853F 100%);
+    border-radius: 50% 50% 45% 45%;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.2);
+    animation: head-bob 2s ease-in-out infinite;
+}
+
+@keyframes head-bob {
+    0%, 100% { transform: translateX(-50%) translateY(0) rotate(0deg); }
+    25% { transform: translateX(-50%) translateY(-2px) rotate(-5deg); }
+    75% { transform: translateX(-50%) translateY(-2px) rotate(5deg); }
+}
+
+.dog-head::before,
+.dog-head::after {
+    content: '';
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    background: #000;
+    border-radius: 50%;
+    top: 12px;
+    animation: blink 4s ease-in-out infinite;
+}
+
+.dog-head::before { left: 10px; }
+.dog-head::after { right: 10px; }
+
+@keyframes blink {
+    0%, 90%, 100% { height: 6px; }
+    95% { height: 1px; }
+}
+
+/* Dog Nose */
+.dog-nose {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 6px;
+    height: 5px;
+    background: #000;
+    border-radius: 50%;
+}
+
+/* Dog Mouth */
+.dog-mouth {
+    position: absolute;
+    bottom: 4px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 20px;
+    height: 10px;
+    border-bottom: 2px solid #000;
+    border-radius: 0 0 20px 20px;
+}
+
+/* Happy dog has same face as sad dog */
+.dog-sprite.happy .dog-mouth {
+    border-bottom: 2px solid #000;
+    border-radius: 20px 20px 0 0;
+    border-top: 2px solid #000;
+    border-bottom: none;
+}
+
+.dog-sprite.sad .dog-mouth {
+    border-bottom: 2px solid #000;
+    border-radius: 20px 20px 0 0;
+    border-top: 2px solid #000;
+    border-bottom: none;
+}
+
+/* Dog Paws */
+.dog-paw-left,
+.dog-paw-right {
+    position: absolute;
+    bottom: 5px;
+    width: 12px;
+    height: 8px;
+    background: #D2691E;
+    border-radius: 50%;
+    box-shadow: 0 2px 3px rgba(0,0,0,0.2);
+}
+
+.dog-paw-left {
+    left: 25px;
+    animation: paw-tap-left 2s ease-in-out infinite;
+}
+
+.dog-paw-right {
+    right: 25px;
+    animation: paw-tap-right 2s ease-in-out infinite;
+    animation-delay: 1s;
+}
+
+@keyframes paw-tap-left {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-3px); }
+}
+
+@keyframes paw-tap-right {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-3px); }
+}
+
+/* Dog Ears */
+.dog-sprite::before,
+.dog-sprite::after {
+    content: '';
+    position: absolute;
+    width: 18px;
+    height: 25px;
+    background: linear-gradient(135deg, #8B4513 0%, #A0522D 100%);
+    border-radius: 50% 50% 0 0;
+    top: 5px;  /* Changed from bottom to top positioning */
+    z-index: -1;
+    animation: ear-wiggle 3s ease-in-out infinite;
+}
+
+.dog-sprite::before {
+    left: 18px;  /* Adjusted for better alignment */
+    transform: rotate(-25deg);
+    animation-delay: 0.5s;
+}
+
+.dog-sprite::after {
+    right: 18px;  /* Adjusted for better alignment */
+    transform: rotate(25deg);
+    animation-delay: 0s;  /* Different timing from left ear */
+}
+
+@keyframes ear-wiggle {
+    0%, 100% { transform: rotate(-25deg); }
+    50% { transform: rotate(-30deg); }
+}
+
+/* Special animation for right ear */
+.dog-sprite::after {
+    animation-name: ear-wiggle-right;
+}
+
+@keyframes ear-wiggle-right {
+    0%, 100% { transform: rotate(25deg); }  /* Positive rotation for right ear */
+    50% { transform: rotate(30deg); }
+}
+
+/* Dog Tail */
+.dog-tail {
+    position: absolute;
+    bottom: 18px;  /* Moved up from 12px */
+    right: 10px;  /* Moved closer to center */
+    width: 20px;
+    height: 30px;
+    background: linear-gradient(135deg, #8B4513 0%, #A0522D 100%);
+    border-radius: 50% 10px;
+    transform-origin: bottom left;  /* Changed origin point for better wag */
+    animation: tail-wag 0.5s ease-in-out infinite;
+    z-index: -1;
+}
+
+@keyframes tail-wag {
+    0%, 100% { transform: rotate(-20deg) translateX(0); }
+    25% { transform: rotate(0deg) translateX(-2px); }
+    50% { transform: rotate(20deg) translateX(0); }
+    75% { transform: rotate(0deg) translateX(2px); }
+}
+
+/* Beach Ball */
+.beach-ball {
+    position: absolute;
+    bottom: 5px;
+    left: -35px;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    background: conic-gradient(
+        from 0deg,
+        #FF0000 0deg 60deg,
+        #FFD700 60deg 120deg,
+        #0000FF 120deg 180deg,
+        #00FF00 180deg 240deg,
+        #FF69B4 240deg 300deg,
+        #FFA500 300deg 360deg
+    );
+    box-shadow: 
+        0 3px 6px rgba(0,0,0,0.3),
+        inset -2px -2px 4px rgba(0,0,0,0.2);
+    animation: ball-idle 2s ease-in-out infinite;
+}
+
+@keyframes ball-idle {
+    0%, 100% { transform: rotate(0deg); }
+    50% { transform: rotate(360deg); }
+}
+
+/* Dog States */
+.dog-sprite.happy {
+    animation: dog-happy 1.5s ease-in-out infinite;
+}
+
+.dog-sprite.happy .dog-tail {
+    animation: tail-wag-fast 0.3s ease-in-out infinite;
+}
+
+@keyframes dog-happy {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    25% { transform: translateY(-15px) rotate(-5deg); }
+    50% { transform: translateY(-20px) rotate(0deg); }
+    75% { transform: translateY(-15px) rotate(5deg); }
+}
+
+@keyframes tail-wag-fast {
+    0%, 100% { transform: rotate(-30deg); }
+    50% { transform: rotate(30deg); }
+}
+
+.dog-sprite.happy .beach-ball {
+    animation: ball-bounce 1.5s ease-in-out infinite;
+}
+
+@keyframes ball-bounce {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-30px) rotate(720deg); }
+}
+
+/* Neutral state - dog sits calmly */
+.dog-sprite.neutral .dog-body {
+    animation: breathe 3s ease-in-out infinite;
+}
+
+@keyframes breathe {
+    0%, 100% { transform: translateX(-50%) scale(1); }
+    50% { transform: translateX(-50%) scale(1.05); }
+}
+
+/* Sad state */
+.dog-sprite.sad .dog-head {
+    animation: head-droop 4s ease-in-out infinite;
+}
+
+@keyframes head-droop {
+    0%, 100% { transform: translateX(-50%) translateY(0) rotate(0deg); }
+    50% { transform: translateX(-50%) translateY(5px) rotate(-10deg); }
+}
+
+.dog-sprite.sad .dog-head::before,
+.dog-sprite.sad .dog-head::after {
+    height: 3px;
+    top: 14px;
+    background: linear-gradient(to bottom, #000 0%, transparent 100%);
+}
+
+/* Happy dog keeps simple black eyes - no changes needed */
+
+.dog-sprite.sad .dog-tail {
+    animation: tail-droop 4s ease-in-out infinite;
+}
+
+@keyframes tail-droop {
+    0%, 100% { transform: rotate(45deg) translateY(0px); }  /* Moved up by removing translateY */
+    50% { transform: rotate(50deg) translateY(2px); }  /* Less droop */
+}
+
+.dog-sprite.sad .beach-ball {
+    opacity: 0.5;
+    animation: none;
+    transform: translateX(-10px);
+}
+
+.dog-sprite.sad::before,
+.dog-sprite.sad::after {
+    transform: rotate(-45deg) !important;
+}
+
+@keyframes dog-entrance {
+    0% { 
+        transform: translateY(100px) scale(0.5);
+        opacity: 0;
+    }
+    100% { 
+        transform: translateY(0) scale(1);
+        opacity: 1;
+    }
+}
+
+/* Speech Bubble */
+.speech-bubble {
+    position: absolute;
+    top: -40px;  /* Position above dog */
+    left: 50%;
+    transform: translateX(-50%);
+    background: white;
+    color: #333;
+    padding: 8px 12px;
+    border-radius: 15px;
+    font-size: 12px;
+    font-weight: 500;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    white-space: nowrap;
+}
+
+.speech-bubble.show {
+    opacity: 1;
+}
+
+.speech-bubble::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-top: 8px solid white;
+}
+
+/* Health Score */
+.health-score {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    z-index: 10;
+}
+
+.score-circle-svg {
+    transform: rotate(-90deg);
+}
+
+.score-circle-bg {
+    fill: none;
+    stroke: rgba(255, 255, 255, 0.3);
+    stroke-width: 6;
+}
+
+.score-circle-progress {
+    fill: none;
+    stroke: #28a745;
+    stroke-width: 6;
+    stroke-linecap: round;
+    stroke-dasharray: 226;
+    stroke-dashoffset: 226;
+    transition: stroke-dashoffset 1s ease-out, stroke 0.5s ease;
+}
+
+.score-display {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+}
+
+.score-value {
+    display: block;
+    font-size: 24px;
+    font-weight: bold;
+    color: white;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+}
+
+.score-label {
+    display: block;
+    font-size: 10px;
+    color: white;
+    opacity: 0.9;
+    text-transform: uppercase;
+}
+
+/* Auth Forms */
+.auth-form {
+    padding: 20px;
+}
+
+.auth-form h2 {
+    margin-bottom: 20px;
+    color: #2c3e50;
+}
+
+input[type="email"],
+input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+input:focus {
+    outline: none;
+    border-color: #667eea;
+}
+
+/* Stats Bar */
+.stats-bar {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    padding: 15px;
+    background: white;
+    border-bottom: 1px solid #e1e4e8;
+    margin-top: -1px; /* Fix gap after header */
+}
+
+.stat {
+    text-align: center;
+}
+
+.stat-value {
+    display: block;
+    font-size: 24px;
+    font-weight: bold;
+    color: #667eea;
+}
+
+.stat-label {
+    display: block;
+    font-size: 11px;
+    color: #6c757d;
+    margin-top: 2px;
+}
+
+/* Quick Actions */
+.quick-actions {
+    padding: 15px;
+    display: flex;
+    gap: 10px;
+    background: white;
+    border-bottom: 1px solid #e1e4e8;
+}
+
+.action-btn {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    background: #f1f3f4;
+    color: #5f6368;
+}
+
+.action-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.action-btn.primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+.action-btn.danger {
+    background: #dc3545;
+    color: white;
+}
+
+.badge {
+    background: rgba(255, 255, 255, 0.3);
+    padding: 2px 6px;
+    border-radius: 10px;
+    font-size: 11px;
+    font-weight: bold;
+}
+
+/* Sections */
+.section {
+    padding: 15px;
+    background: white;
+    margin-bottom: 10px;
+}
+
+.section h3 {
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 12px;
+    color: #2c3e50;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.select-all-btn {
+    font-size: 11px;
+    padding: 4px 8px;
+    background: #667eea;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+/* Tab List */
+.tab-list {
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.tab-item {
+    display: flex;
+    align-items: center;
+    padding: 8px;
+    margin-bottom: 8px;
+    background: #f8f9fa;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.tab-item:hover {
+    background: #e9ecef;
+}
+
+.tab-item.selected {
+    background: #e3e6ff;
+    border: 1px solid #667eea;
+}
+
+.tab-checkbox {
+    margin-right: 10px;
+}
+
+.tab-favicon {
+    width: 16px;
+    height: 16px;
+    margin-right: 8px;
+}
+
+.tab-info {
+    flex: 1;
+    overflow: hidden;
+}
+
+.tab-title {
+    font-size: 13px;
+    font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.tab-url {
+    font-size: 11px;
+    color: #6c757d;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.tab-reason {
+    font-size: 10px;
+    color: #dc3545;
+    margin-left: auto;
+    padding: 2px 6px;
+    background: rgba(220, 53, 69, 0.1);
+    border-radius: 4px;
+}
+
+/* Group List */
+.group-item {
+    padding: 10px;
+    margin-bottom: 10px;
+    background: #f8f9fa;
+    border-radius: 6px;
+}
+
+.group-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.group-name {
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.group-count {
+    font-size: 12px;
+    color: #6c757d;
+}
+
+.group-tabs {
+    font-size: 12px;
+    color: #6c757d;
+    margin-bottom: 8px;
+}
+
+.group-btn {
+    width: 100%;
+    padding: 6px;
+    background: #667eea;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+/* Loading */
+.loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+}
+
+.spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid #e1e4e8;
+    border-top: 4px solid #667eea;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* User Footer */
+.user-footer {
+    padding: 10px 15px;
+    background: #f8f9fa;
+    border-top: 1px solid #e1e4e8;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 12px;
+    margin-top: auto;
+}
+
+.text-btn {
+    background: none;
+    border: none;
+    color: #667eea;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+.primary-btn {
+    width: 100%;
+    padding: 12px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.primary-btn:hover {
+    transform: translateY(-2px);
+}
+
+.auth-switch {
+    text-align: center;
+    margin-top: 15px;
+    font-size: 13px;
+    color: #6c757d;
+}
+
+.auth-switch a {
+    color: #667eea;
+    text-decoration: none;
+}
+
+/* Error Message */
+.error-message {
+    margin: 15px;
+    padding: 10px;
+    background: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+    border-radius: 4px;
+    font-size: 13px;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+    width: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}

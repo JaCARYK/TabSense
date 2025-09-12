@@ -1,24 +1,27 @@
 {
   "manifest_version": 3,
-  "name": "TabSense - Smart Tab Predictor",
-  "version": "1.0.0",
-  "description": "Chrome extension that uses Machine Learning to predict the next URL to open based on browsing patterns",
+  "name": "TabSense Declutter - Smart Tab Manager",
+  "version": "2.0.0",
+  "description": "AI-powered tab manager that helps declutter your browser with smart suggestions and one-click actions",
   "permissions": [
     "tabs",
     "storage",
     "activeTab",
-    "scripting"
+    "scripting",
+    "tabGroups",
+    "bookmarks",
+    "history"
   ],
   "host_permissions": [
     "http://*/*",
     "https://*/*"
   ],
   "background": {
-    "service_worker": "background.js",
+    "service_worker": "background_declutter.js",
     "type": "module"
   },
   "action": {
-    "default_popup": "popup.html",
+    "default_popup": "popup_declutter.html",
     "default_icon": {
       "16": "icons/icon16.png",
       "48": "icons/icon48.png",

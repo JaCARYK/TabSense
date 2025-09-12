@@ -50,6 +50,8 @@ def predict(month, day, hour, minute, url, email):
             
     except Exception as e:
         print(f"Error in prediction: {str(e)}")
+        import traceback
+        traceback.print_exc()
         return "Error occurred during prediction"
 
 @app.route('/stats/<email>/')

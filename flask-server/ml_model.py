@@ -81,8 +81,13 @@ class TabSensePredictor:
         
         self.model.fit(X_resampled, y_resampled)
         
-        score = cross_val_score(self.model, X_resampled, y_resampled, cv=3)
-        print(f"Model accuracy: {np.mean(score):.2f}")
+        # Use min(3, number of samples) for cross-validation to handle small datasets
+        cv_splits = min(3, len(np.unique(y_resampled)))
+        if cv_splits > 1:
+            score = cross_val_score(self.model, X_resampled, y_resampled, cv=cv_splits)
+            print(f"Model accuracy: {np.mean(score):.2f}")
+        else:
+            print("Not enough data for cross-validation yet")
         
         return True
     

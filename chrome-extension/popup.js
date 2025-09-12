@@ -1,5 +1,5 @@
 let currentUser = null;
-const FLASK_API_URL = 'http://localhost:5000';
+const FLASK_API_URL = 'http://localhost:5001';
 
 document.addEventListener('DOMContentLoaded', function() {
     checkAuthState();
