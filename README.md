@@ -1,4 +1,4 @@
-# TabSense Declutter - Smart Tab Manager 🐕
+# TabSense Declutter - Smart Tab Manager
 
 Chrome browser extension with an adorable animated dog mascot that helps you declutter and organize your browser tabs using AI-powered analysis.
 
@@ -47,7 +47,7 @@ Chrome browser extension with an adorable animated dog mascot that helps you dec
 - Anyone who loves cute dog animations!
 - Users who want to boost browser performance
 
-## 🏗️ Architecture
+## Architecture
 
 ```
 Chrome Extension (Manifest V3) → Firebase (Optional) → Local AI Analysis
